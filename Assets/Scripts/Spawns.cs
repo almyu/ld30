@@ -52,16 +52,6 @@ public class Spawns : MonoBehaviour {
             spawnRect.size = new Vector2(camWidth * speedFactor, camHeight * speedFactor);
             spawnRect.position = position - spawnRect.size / 2.0f + velocity;
             
-            Debug.DrawLine(new Vector3(cameraRect.xMin, cameraRect.yMin), new Vector3(cameraRect.xMax, cameraRect.yMin));
-            Debug.DrawLine(new Vector3(cameraRect.xMax, cameraRect.yMin), new Vector3(cameraRect.xMax, cameraRect.yMax));
-            Debug.DrawLine(new Vector3(cameraRect.xMax, cameraRect.yMax), new Vector3(cameraRect.xMin, cameraRect.yMax));
-            Debug.DrawLine(new Vector3(cameraRect.xMin, cameraRect.yMax), new Vector3(cameraRect.xMin, cameraRect.yMin));
-            
-            Debug.DrawLine(new Vector3(spawnRect.xMin, spawnRect.yMin), new Vector3(spawnRect.xMax, spawnRect.yMin), Color.green);
-            Debug.DrawLine(new Vector3(spawnRect.xMax, spawnRect.yMin), new Vector3(spawnRect.xMax, spawnRect.yMax), Color.green);
-            Debug.DrawLine(new Vector3(spawnRect.xMax, spawnRect.yMax), new Vector3(spawnRect.xMin, spawnRect.yMax), Color.green);
-            Debug.DrawLine(new Vector3(spawnRect.xMin, spawnRect.yMax), new Vector3(spawnRect.xMin, spawnRect.yMin), Color.green);
-            
             Vector3 camAdd;
             do {
                 camAdd = new Vector2(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax));
