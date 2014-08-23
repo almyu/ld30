@@ -1,9 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Spawn : MonoBehaviour {
+public class Spawns : MonoBehaviour {
 
-    public GameObject prefab;
+    [System.Serializable]
+    public struct Spawn {
+        public GameObject prefab;
+        public float chance;
+    }
+    
+    public static Spawns instance;
+
+    public Spawn[] spawns;
     
     private Rigidbody2D cachedPlayerRigidbody2D;
     private Transform cachedTransform;
@@ -16,15 +24,26 @@ public class Spawn : MonoBehaviour {
     public float current = 0;
     
     private void Awake() {
+        instance = this;
+        
         cachedTransformCamera = Camera.main.transform;
         cachedTransform = transform;
+        
+        cachedPlayerRigidbody2D = Camera.main.GetComponent<CameraFollow>().target;
+        
+        var s = 0.0f;
+        foreach (var spawn in spawns)
+            s += spawn.chance;
+        
+        for (int i = 0; i < spawns.Length; ++i)
+            spawns[i].chance = spawns[i].chance / s;
     }
 
     private void Update() {
         while (current < max) {
             var camHeight = 2f * Camera.main.orthographicSize;
             var camWidth = camHeight * Camera.main.aspect;
-            var velocity = Vector3.right + Vector3.down;
+            var velocity = cachedPlayerRigidbody2D.velocity;
             var camCornerCenter = Vector3.right * camWidth / 2.0f * Mathf.Sign(velocity.x) + Vector3.up * camHeight / 2.0f  * Mathf.Sign(velocity.y);
             var camCornerLeft = -Vector3.right * camWidth / 2.0f * Mathf.Sign(velocity.x) + Vector3.up * camHeight / 2.0f  * Mathf.Sign(velocity.y);
             var camCornerRight = Vector3.right * camWidth / 2.0f * Mathf.Sign(velocity.x) - Vector3.up * camHeight / 2.0f  * Mathf.Sign(velocity.y);
@@ -41,7 +60,18 @@ public class Spawn : MonoBehaviour {
                     Random.Range((cameraFactorAdd + camCornerRight).y, (cameraFactorAdd + camCornerCenter + velocityAdd).y),
                     0.0f);
             }
-            var enemy = Instantiate(prefab, cachedTransformCamera.position + camAdd, Quaternion.identity) as GameObject;
+            
+            GameObject prefab = spawns[0].prefab;
+            var r = Random.value;
+            foreach (var spawn in spawns) {
+                if (spawn.chance <= r) {
+                    r -= spawn.chance;
+                    continue;
+                }
+                prefab = spawn.prefab;
+                break;
+            }
+            var enemy = Instantiate(prefab, new Vector3(cachedTransformCamera.position.x + camAdd.x, cachedTransformCamera.position.y + camAdd.y, 0.0f), Quaternion.identity) as GameObject;
             enemy.transform.parent = cachedTransform;
             current++;
         }
