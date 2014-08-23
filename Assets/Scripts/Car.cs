@@ -12,8 +12,8 @@ public class Car : MonoBehaviour {
         cachedBody = GetComponent<Rigidbody2D>();
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         var dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        cachedBody.AddForce(dir * Time.deltaTime * acceleration, ForceMode2D.Impulse);
+        cachedBody.AddForce(dir * Time.fixedDeltaTime * acceleration, ForceMode2D.Impulse);
     }
 }
