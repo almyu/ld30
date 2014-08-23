@@ -25,7 +25,7 @@
 			const float rpi = 0.31830988618;
 
 			half2 cs = IN.uv_MainTex.xy * 2.0 - 1.0;
-			half angle = (atan(cs.y, cs.x) * rpi) * 0.5 + 0.5;
+			half angle = (atan2(cs.y, cs.x) * rpi) * 0.5 + 0.5;
 
 			half3 clr = lerp(_RedSector, lerp(_GreenSector, _BlueSector, step(1.0 - _Sectors.b, angle)), step(_Sectors.r, angle));
 
