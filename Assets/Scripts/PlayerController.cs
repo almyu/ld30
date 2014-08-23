@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Car))]
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoSingleton<PlayerController> {
 
-    public static PlayerController instance;
-    
     private Car cachedCar;
 
     private void Awake() {
-        instance = this;
-        
         cachedCar = GetComponent<Car>();
+        cachedCar.directControl = Input.GetJoystickNames().Length != 0;
     }
 
     private void Update() {
