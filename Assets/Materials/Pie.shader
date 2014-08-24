@@ -7,7 +7,7 @@
 		_BlueSector("Blue Sector", Color) = (0, 0, 1)
 	}
 	SubShader {
-		Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+		Tags { "Queue"="Transparent" }
 		Lighting Off
 		Blend SrcColor One
 		
@@ -21,14 +21,15 @@
 			half3 _RedSector, _GreenSector, _BlueSector;
 
 			struct fragdata {
-				half2 uv : TEXCOORD0;
+				float4 pos : SV_POSITION;
+				half2 uv   : TEXCOORD0;
 				half4 csmr : TEXCOORD1;
 			};
 
-			float4 vert(appdata_full i, out fragdata o) : SV_POSITION {
+			void vert(appdata_full i, out fragdata o) {
+				o.pos = mul(UNITY_MATRIX_MVP, i.vertex);
 				o.uv = i.texcoord.xy;
 				o.csmr = half4(i.texcoord.xy * -2.0 + 1.0, i.color.r, 1.0 - i.color.b);
-				return mul(UNITY_MATRIX_MVP, i.vertex);
 			}
 
 			fixed4 frag(fragdata i) : COLOR {
