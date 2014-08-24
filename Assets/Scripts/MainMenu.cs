@@ -12,7 +12,9 @@ public class MainMenu : MonoBehaviour {
     public RectTransform woodButton;
 
     private void Awake() {
-    
+        PlayerPrefs.SetFloat("RustPoints", 100.0f);
+        PlayerPrefs.SetFloat("NeonPoints", 100.0f);
+        PlayerPrefs.SetFloat("WoodenPoints", 100.0f);
     }
 
     private void Update() {
