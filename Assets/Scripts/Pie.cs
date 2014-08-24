@@ -23,7 +23,7 @@ public class Pie : MonoBehaviour {
     public Sector GetSector(float angle) {
         var w = weights;
 
-        angle -= cachedXf.localEulerAngles.z;
+        angle -= cachedXf.rotation.eulerAngles.z;
         angle = Mathf.Repeat(angle + 360.0f, 360.0f) / 360.0f;
 
         if (angle < w.r) return Sector.Red;
