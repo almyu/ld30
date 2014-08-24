@@ -18,8 +18,8 @@ public class Pie : MonoBehaviour {
     private Transform cachedXf;
     private SpriteRenderer cachedRenderer;
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        var otherPie = collision.gameObject.GetComponent<Pie>();
+    private void OnTriggerEnter2D(Collider2D other) {
+        var otherPie = other.GetComponent<Pie>();
         if (otherPie == null) return;
 
         var myPoint = cachedXf.position;
