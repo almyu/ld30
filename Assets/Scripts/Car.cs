@@ -12,6 +12,10 @@ public class Car : MonoBehaviour {
     public class OnDriveEvent : UnityEvent<bool> {}
     public OnDriveEvent onDrive;
 
+    [System.Serializable]
+    public class OnSteerEvent : UnityEvent<float> {}
+    public OnSteerEvent onSteer;
+
     [HideInInspector]
     public Vector2 control {
         get { return _control; }
@@ -21,6 +25,9 @@ public class Car : MonoBehaviour {
 
             if (wasStill != nowStill)
                 onDrive.Invoke(wasStill);
+
+            if (!Mathf.Approximately(_control.x, value.x))
+                onSteer.Invoke(value.x);
 
             _control = value;
         }
