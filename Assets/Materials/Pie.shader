@@ -7,31 +7,38 @@
 		_BlueSector("Blue Sector", Color) = (0, 0, 1)
 	}
 	SubShader {
-		Tags { "RenderType"="Transparent" }
+		Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+		Lighting Off
+		Blend SrcColor One
 		
-		CGPROGRAM
-		#pragma surface surf Lambert alpha
+		Pass {
+			CGPROGRAM
+			#include "UnityCG.cginc"
+			#pragma vertex vert
+			#pragma fragment frag
 
-		sampler2D _MainTex;
-		half3 _RedSector, _GreenSector, _BlueSector;
+			sampler2D _MainTex;
+			half3 _RedSector, _GreenSector, _BlueSector;
 
-		struct Input {
-			float2 uv_MainTex;
-			fixed4 color : COLOR;
-		};
+			float4 vert(float4 v : POSITION, float4 vuv : TEXCOORD0, fixed4 vclr : COLOR, out half2 uv, out half4 csmr) : SV_POSITION {
+				uv = vuv.xy;
+				csmr = half4(vuv.xy * -2.0 + 1.0, vclr.r, 1.0 - vclr.b);
+				return mul(UNITY_MATRIX_MVP, v);
+			}
 
-		void surf(Input IN, inout SurfaceOutput o) {
-			const float rpi = 0.31830988618;
+			fixed4 frag(half2 uv, half4 csmr) : COLOR {
+				const float rpi = 0.31830988618;
 
-			half2 cs = IN.uv_MainTex.xy * -2.0 + 1.0;
-			half angle = (atan2(cs.y, cs.x) * rpi) * 0.5 + 0.5;
+				half angle = (atan2(csmr.y, csmr.x) * rpi) * 0.5 + 0.5;
 
-			half3 clr = lerp(_RedSector, lerp(_GreenSector, _BlueSector, step(1.0 - IN.color.b, angle)), step(IN.color.r, angle));
+				half3 sector = lerp(_RedSector, lerp(_GreenSector, _BlueSector, step(csmr.w, angle)), step(csmr.z, angle));
 
-			half4 smp = tex2D(_MainTex, IN.uv_MainTex);
-			o.Albedo = smp.rgb * clr;
-			o.Alpha = smp.a;
+				half4 smp = tex2D(_MainTex, uv);
+				smp.rgb *= sector * smp.a;
+
+				return smp;
+			}
+			ENDCG
 		}
-		ENDCG
 	} 
 }
