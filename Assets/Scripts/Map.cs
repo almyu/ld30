@@ -12,7 +12,7 @@ public class Map : MonoBehaviour {
         public int indexRows;
         public int indexCols;
         
-        private float size;
+        private float tileSize;
         
         public Tiles(Transform[] tiles, int width, int height, float tileSize) {
             rows = new Transform[height][];
@@ -31,37 +31,33 @@ public class Map : MonoBehaviour {
                 }
             }
 
-            size = tileSize;
+            this.tileSize = tileSize;
             indexRows = 0;
             indexCols = 0;
         }
         
         public void Up() {
-            for (var i = 0; i < firstRow.Length; i++) {
-                firstRow[i].position = new Vector3(firstRow[i].position.x, firstRow[i].position.y + size * rows.Length, 0.0f);
-            }
+            for (var i = 0; i < firstRow.Length; i++)
+                firstRow[i].position = new Vector3(firstRow[i].position.x, firstRow[i].position.y + tileSize * rows.Length, 0.0f);
             indexRows = (indexRows + 1) % rows.Length;
         }
 
         public void Down() {
-            for (var i = 0; i < lastRow.Length; i++) {
-                lastRow[i].position = new Vector3(lastRow[i].position.x, lastRow[i].position.y - size * rows.Length, 0.0f);
-            }
+            for (var i = 0; i < lastRow.Length; i++)
+                lastRow[i].position = new Vector3(lastRow[i].position.x, lastRow[i].position.y - tileSize * rows.Length, 0.0f);
             indexRows = (indexRows - 1) % rows.Length;
             indexRows = indexRows < 0 ? rows.Length - 1 : indexRows;
         }
 
         public void Right() {
-            for (var i = 0; i < firstCol.Length; i++) {
-                firstCol[i].position = new Vector3(firstCol[i].position.x + size * cols.Length, firstCol[i].position.y, 0.0f);
-            }
+            for (var i = 0; i < firstCol.Length; i++)
+                firstCol[i].position = new Vector3(firstCol[i].position.x + tileSize * cols.Length, firstCol[i].position.y, 0.0f);
             indexCols = (indexCols + 1) % cols.Length;
         }
 
         public void Left() {
-            for (var i = 0; i < lastCol.Length; i++) {
-                lastCol[i].position = new Vector3(lastCol[i].position.x - size * cols.Length, lastCol[i].position.y, 0.0f);
-            }
+            for (var i = 0; i < lastCol.Length; i++)
+                lastCol[i].position = new Vector3(lastCol[i].position.x - tileSize * cols.Length, lastCol[i].position.y, 0.0f);
             indexCols = (indexCols - 1) % cols.Length;
             indexCols = indexCols < 0 ? cols.Length - 1 : indexCols;
         }
@@ -87,7 +83,6 @@ public class Map : MonoBehaviour {
     
     public float cameraFactor = 1.4f;
     public float tilesSize = 4;
-    public float tileSize = 2.0f;
     
     private Tiles tiles;
     
@@ -96,19 +91,17 @@ public class Map : MonoBehaviour {
     private Rigidbody2D cachedPlayerRigidbody2D;
 
     private void Awake() {
-        tileSize = prefab.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
-
         cachedTransform = transform;
-        cachedTransformCamera = Camera.main.transform;
-        cachedPlayerRigidbody2D = Camera.main.GetComponent<CameraFollow>().target;
+
+        var size = prefab.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
         
-        var cameraRect = CameraRect(tilesSize);
+        var tileRect = CameraUtility.instance.ScaleRect(tilesSize);
         
         var tempMaps = new List<Transform>();
         
         int i = 0, j = 0;
-        for (var x = cameraRect.xMin; x <= cameraRect.xMax; x += tileSize) {
-            for (var y = cameraRect.yMin; y <= cameraRect.yMax; y += tileSize) {
+        for (var x = tileRect.xMin; x <= tileRect.xMax; x += size) {
+            for (var y = tileRect.yMin; y <= tileRect.yMax; y += size) {
                 var tile = Instantiate(prefab, new Vector3(x, y, 0.0f), Quaternion.identity) as GameObject;
                 tile.transform.parent = cachedTransform;
                 tempMaps.Add(tile.transform);
@@ -117,32 +110,20 @@ public class Map : MonoBehaviour {
             i++;
         }
     
-        tiles = new Tiles(tempMaps.ToArray(), i, j / i, tileSize);
+        tiles = new Tiles(tempMaps.ToArray(), i, j / i, size);
     }
 
     private void Update() {
-        var cameraRect = CameraRect(cameraFactor);
+        var rect = CameraUtility.instance.ScaleRect(cameraFactor);
 
-        if (tiles.firstCol[0].position.x > cameraRect.xMin)
+        if (tiles.firstCol[0].position.x > rect.xMin)
             tiles.Left();
-        if (tiles.firstRow[0].position.y > cameraRect.yMin)
+        if (tiles.firstRow[0].position.y > rect.yMin)
             tiles.Down();
         
-        if (tiles.lastCol[0].position.x < cameraRect.xMax)
+        if (tiles.lastCol[0].position.x < rect.xMax)
             tiles.Right();
-        if (tiles.lastRow[0].position.y < cameraRect.yMax)
+        if (tiles.lastRow[0].position.y < rect.yMax)
             tiles.Up();
-    }
-    
-    private Rect CameraRect(float factor) {
-        var camHeight = 2f * Camera.main.orthographicSize;
-        var camWidth = camHeight * Camera.main.aspect;
-        var velocity = cachedPlayerRigidbody2D.velocity;
-        var position = new Vector2(cachedTransformCamera.position.x, cachedTransformCamera.position.y);
-        var cameraRect = new Rect(-camWidth / 2.0f, -camHeight / 2.0f, camWidth, camHeight);
-        cameraRect.size = new Vector2(camWidth * factor, camHeight * factor);
-        cameraRect.position = position - cameraRect.size / 2.0f;
-        
-        return cameraRect;
     }
 }

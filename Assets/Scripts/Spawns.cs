@@ -41,16 +41,9 @@ public class Spawns : MonoBehaviour {
 
     private void Update() {
         while (current < max) {
-            var camHeight = 2f * Camera.main.orthographicSize;
-            var camWidth = camHeight * Camera.main.aspect;
+            var cameraRect = CameraUtility.instance.ScaleRect(cameraFactor);
             var velocity = cachedPlayerRigidbody2D.velocity;
-            var position = new Vector2(cachedTransformCamera.position.x, cachedTransformCamera.position.y);
-            var cameraRect = new Rect(-camWidth / 2.0f, -camHeight / 2.0f, camWidth, camHeight);
-            cameraRect.size = new Vector2(camWidth * cameraFactor, camHeight * cameraFactor);
-            cameraRect.position = position - cameraRect.size / 2.0f;
-            var spawnRect = cameraRect;
-            spawnRect.size = new Vector2(camWidth * speedFactor, camHeight * speedFactor);
-            spawnRect.position = position - spawnRect.size / 2.0f + velocity;
+            var spawnRect = CameraUtility.instance.ScaleRect(speedFactor, velocity);
             
             Vector3 camAdd;
             do {
