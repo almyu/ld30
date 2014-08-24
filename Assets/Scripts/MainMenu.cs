@@ -19,4 +19,13 @@ public class MainMenu : MonoBehaviour {
         neonSkin.position = new Vector3(Camera.main.ScreenToWorldPoint(neonButton.position).x, 0.0f, 0.0f);
         rustSkin.position = new Vector3(Camera.main.ScreenToWorldPoint(rustButton.position).x, 0.0f, 0.0f);
     }
+
+    public void LoadLevel(int id) {
+        Application.LoadLevel(id);
+        PlayerPrefs.SetInt("HomeLevel", id);
+    }
+
+    public void ChangeMod(bool active) {
+        PlayerPrefs.SetInt("DirectControl", active ? 1 : 0);
+    }
 }

@@ -37,7 +37,13 @@ public class Spawns : MonoBehaviour {
             s += spawn.chance;
         
         for (int i = 0; i < spawns.Length; ++i)
-            spawns[i].chance = spawns[i].chance / s;
+            spawns[i].chance = spawns[i].chance / s; 
+    }
+
+    private void Start() {
+        var id = PlayerPrefs.GetInt("HomeLevel", 0);
+        if (id == LevelSettings.instance.levelIndex)
+            aggressionDistance = 0.0f;
     }
 
     private void Update() {

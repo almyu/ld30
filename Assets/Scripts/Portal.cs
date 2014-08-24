@@ -15,7 +15,6 @@ public class Portal : MonoBehaviour {
 
     private void Update() {
         glow.Rotate(Vector3.forward * Time.deltaTime * speedRotation);
-    
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
