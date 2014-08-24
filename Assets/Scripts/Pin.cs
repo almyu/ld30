@@ -25,12 +25,10 @@ public class Pin : MonoBehaviour {
             foreach (var ctl in cachedControllers)
                 ctl.enabled = !value;
 
-            if (value) {
-                var sector = pie.GetSector(cachedXf.position);
+            if (value && cachedCrosshair != null) {
+                var sector = pie.GetSector(cachedCrosshair.transform.position);
                 onPinSector.Invoke(sector);
-
-                if (cachedCrosshair != null)
-                    onPinColor.Invoke(cachedCrosshair.colors[(int) sector]);
+                onPinColor.Invoke(cachedCrosshair.colors[(int) sector]);
             }
 
             _pinned = value;
