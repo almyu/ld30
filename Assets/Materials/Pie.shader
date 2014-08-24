@@ -20,20 +20,25 @@
 			sampler2D _MainTex;
 			half3 _RedSector, _GreenSector, _BlueSector;
 
-			float4 vert(float4 v : POSITION, float4 vuv : TEXCOORD0, fixed4 vclr : COLOR, out half2 uv : TEXCOORD0, out half4 csmr : TEXCOORD1) : SV_POSITION {
-				uv = vuv.xy;
-				csmr = half4(vuv.xy * -2.0 + 1.0, vclr.r, 1.0 - vclr.b);
-				return mul(UNITY_MATRIX_MVP, v);
+			struct fragdata {
+				half2 uv : TEXCOORD0;
+				half4 csmr : TEXCOORD1;
+			};
+
+			float4 vert(appdata_full i, out fragdata o) : SV_POSITION {
+				o.uv = i.texcoord.xy;
+				o.csmr = half4(i.texcoord.xy * -2.0 + 1.0, i.color.r, 1.0 - i.color.b);
+				return mul(UNITY_MATRIX_MVP, i.vertex);
 			}
 
-			fixed4 frag(half2 uv : TEXCOORD0, half4 csmr : TEXCOORD1) : COLOR {
+			fixed4 frag(fragdata i) : COLOR {
 				const float rpi = 0.31830988618;
 
-				half angle = (atan2(csmr.y, csmr.x) * rpi) * 0.5 + 0.5;
+				half angle = (atan2(i.csmr.y, i.csmr.x) * rpi) * 0.5 + 0.5;
 
-				half3 sector = lerp(_RedSector, lerp(_GreenSector, _BlueSector, step(csmr.w, angle)), step(csmr.z, angle));
+				half3 sector = lerp(_RedSector, lerp(_GreenSector, _BlueSector, step(i.csmr.w, angle)), step(i.csmr.z, angle));
 
-				half4 smp = tex2D(_MainTex, uv);
+				half4 smp = tex2D(_MainTex, i.uv);
 				smp.rgb *= sector * smp.a;
 
 				return smp;
