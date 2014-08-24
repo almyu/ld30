@@ -13,8 +13,20 @@ public class Car : MonoBehaviour {
     public OnDriveEvent onDrive;
 
     [HideInInspector]
-    public Vector2 control;
+    public Vector2 control {
+        get { return _control; }
+        set {
+            bool wasStill = Mathf.Approximately(_control.y, 0.0f);
+            bool nowStill = Mathf.Approximately(value.y, 0.0f);
 
+            if (wasStill != nowStill)
+                onDrive.Invoke(wasStill);
+
+            _control = value;
+        }
+    }
+
+    private Vector2 _control;
     private Rigidbody2D cachedBody;
 
     private void Awake() {
