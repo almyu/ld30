@@ -19,7 +19,7 @@ public class Wheels : MonoBehaviour {
     }
 
     public bool spinning {
-        get { return spinning; }
+        get { return _spinning; }
         set {
             _spinning = value;
 
