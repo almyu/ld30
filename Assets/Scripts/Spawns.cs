@@ -19,8 +19,8 @@ public class Spawns : MonoBehaviour {
     public float cameraFactor = 1.0f;
     public float speedFactor = 5.0f;
     
-    public float max = 10;
-    public float current = 0;
+    public int max = 10;
+    public int current = 0;
     
     private void Awake() {
         instance = this;

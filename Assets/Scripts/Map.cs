@@ -90,7 +90,7 @@ public class Map : MonoBehaviour {
     private Transform cachedTransformCamera;
     private Rigidbody2D cachedPlayerRigidbody2D;
 
-    private void Awake() {
+    private void Start() {
         cachedTransform = transform;
 
         var size = prefab.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
