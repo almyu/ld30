@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Car : MonoBehaviour {
@@ -7,6 +7,10 @@ public class Car : MonoBehaviour {
     public Transform inner;
     public bool directControl = true;
     public float acceleration = 20.0f;
+
+    [System.Serializable]
+    public class OnDriveEvent : UnityEvent<bool> {}
+    public OnDriveEvent onDrive;
 
     [HideInInspector]
     public Vector2 control;
