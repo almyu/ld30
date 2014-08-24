@@ -24,9 +24,7 @@ public class Enemy : MonoBehaviour {
     }
     
     private void Update() {
-        var angle = Vector3.Angle(cachedCar.inner.up, player.position - cachedTransform.position);
-        var sign = Mathf.Sign(Vector3.Dot(Vector3.back,Vector3.Cross(cachedCar.inner.up, player.position - cachedTransform.position)));
-        cachedCar.control = new Vector2(sign * Mathf.Lerp(0.0f, 1.0f, angle), 1.0f);
+        cachedCar.control = (player.position - cachedTransform.position).normalized;
         if (Vector3.Distance(cachedTransform.position, cachedTransformCamera.position) >= lifeDistance)
             Remove();
     }

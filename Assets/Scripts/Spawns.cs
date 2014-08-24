@@ -15,7 +15,6 @@ public class Spawns : MonoBehaviour {
     
     private Rigidbody2D cachedPlayerRigidbody2D;
     private Transform cachedTransform;
-    private Transform cachedTransformCamera;
 
     public float cameraFactor = 1.0f;
     public float speedFactor = 5.0f;
@@ -26,7 +25,6 @@ public class Spawns : MonoBehaviour {
     private void Awake() {
         instance = this;
         
-        cachedTransformCamera = Camera.main.transform;
         cachedTransform = transform;
         
         cachedPlayerRigidbody2D = Camera.main.GetComponent<CameraFollow>().target;
@@ -45,10 +43,10 @@ public class Spawns : MonoBehaviour {
             var velocity = cachedPlayerRigidbody2D.velocity;
             var spawnRect = CameraUtility.instance.ScaleRect(speedFactor, velocity);
             
-            Vector3 camAdd;
+            Vector3 position;
             do {
-                camAdd = new Vector2(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax));
-            } while(cameraRect.Contains(camAdd));
+                position = new Vector2(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax));
+            } while(cameraRect.Contains(position));
             
             GameObject prefab = spawns[0].prefab;
             var r = Random.value;
@@ -60,9 +58,13 @@ public class Spawns : MonoBehaviour {
                 prefab = spawn.prefab;
                 break;
             }
-                
-            var enemy = Instantiate(prefab, camAdd, Quaternion.identity) as GameObject;
+
+            var rotation = Quaternion.identity;
+            rotation.eulerAngles = new Vector3(0.0f, 0.0f, Random.Range(-180.0f, 180.0f));
+
+            var enemy = Instantiate(prefab, position, Quaternion.identity) as GameObject;
             enemy.transform.parent = cachedTransform;
+            enemy.GetComponent<Car>().inner.rotation = rotation;
             current++;
         }
     }
