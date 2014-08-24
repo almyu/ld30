@@ -3,19 +3,19 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
     
-    public float lifeDistance = 30.0f;
-    
     private Transform player;
     private Transform cachedTransform;
-    private Transform cachedTransformCamera;
     private Car cachedCar;
-    
-    private bool isLive = true;
+
+    private float time = 0.0f;
+
+    private float angle;
 
     private void Awake() {
         cachedTransform = transform;
-        cachedTransformCamera = Camera.main.transform;
         
+        angle = Random.Range(2.1f, 4.1f);
+
         cachedCar = GetComponent<Car>();
     }
     
@@ -24,18 +24,22 @@ public class Enemy : MonoBehaviour {
     }
     
     private void Update() {
-        cachedCar.control = (player.position - cachedTransform.position).normalized;
-        if (Vector3.Distance(cachedTransform.position, cachedTransformCamera.position) >= lifeDistance)
-            Remove();
-    }
-    
-    private void OnBecameInvisible() {
-        if (isLive)
+        time = (time + Time.deltaTime) % angle;
+        var distance = Vector3.Distance(cachedTransform.position, player.position);
+
+        if (distance >= Spawns.instance.aggressionDistance) {
+            cachedCar.control = ((time - angle / 2.0f) * cachedCar.inner.right + cachedCar.inner.up).normalized;
+        }
+        else {
+            cachedCar.control = (player.position - cachedTransform.position).normalized;
+            time = 0.0f;
+        }
+
+        if (distance >= Spawns.instance.lifeDistance)
             Remove();
     }
     
     private void Remove() {
-         isLive = false;
          Destroy(gameObject);
          Spawns.instance.current--;
     }

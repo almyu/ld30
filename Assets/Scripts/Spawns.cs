@@ -11,6 +11,9 @@ public class Spawns : MonoBehaviour {
     
     public static Spawns instance;
 
+    public float lifeDistance = 20.0f;
+    public float aggressionDistance = 5.0f;
+
     public Spawn[] spawns;
     
     private Rigidbody2D cachedPlayerRigidbody2D;
