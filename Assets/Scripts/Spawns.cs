@@ -21,6 +21,9 @@ public class Spawns : MonoBehaviour {
 
     public float cameraFactor = 1.0f;
     public float speedFactor = 5.0f;
+    public float lifeFactor = 3.0f;
+
+    public Rect lifeRect;
     
     public int max = 10;
     public int current = 0;
@@ -47,6 +50,7 @@ public class Spawns : MonoBehaviour {
     }
 
     private void Update() {
+        lifeRect = CameraUtility.instance.ScaleRect(lifeFactor);
         while (current < max) {
             var cameraRect = CameraUtility.instance.ScaleRect(cameraFactor);
             var velocity = cachedPlayerRigidbody2D.velocity;

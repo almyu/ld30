@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour {
             time = 0.0f;
         }
 
-        if (distance >= Spawns.instance.lifeDistance)
+        if (!Spawns.instance.lifeRect.Contains(cachedTransform.position))
             Remove();
     }
     

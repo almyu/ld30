@@ -21,8 +21,8 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void LoadLevel(int id) {
-        Application.LoadLevel(id);
         PlayerPrefs.SetInt("HomeLevel", id);
+        Application.LoadLevel(id);
     }
 
     public void ChangeMod(bool active) {
