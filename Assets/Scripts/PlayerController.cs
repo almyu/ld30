@@ -7,10 +7,11 @@ public class PlayerController : MonoSingleton<PlayerController> {
 
     private void Awake() {
         cachedCar = GetComponent<Car>();
-        cachedCar.directControl = Input.GetJoystickNames().Length != 0;
+        cachedCar.directControl = PlayerPrefs.GetInt("DirectControl", 0) != 0;
     }
 
     private void Update() {
-        cachedCar.control = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        var vaxis = Input.GetAxis("Vertical");
+        cachedCar.control = new Vector2(Input.GetAxis("Horizontal"), vaxis * Mathf.Ceil(Mathf.Abs(vaxis)));
     }
 }
