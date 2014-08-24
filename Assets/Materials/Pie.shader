@@ -20,13 +20,13 @@
 			sampler2D _MainTex;
 			half3 _RedSector, _GreenSector, _BlueSector;
 
-			float4 vert(float4 v : POSITION, float4 vuv : TEXCOORD0, fixed4 vclr : COLOR, out half2 uv, out half4 csmr) : SV_POSITION {
+			float4 vert(float4 v : POSITION, float4 vuv : TEXCOORD0, fixed4 vclr : COLOR, out half2 uv : TEXCOORD0, out half4 csmr : TEXCOORD1) : SV_POSITION {
 				uv = vuv.xy;
 				csmr = half4(vuv.xy * -2.0 + 1.0, vclr.r, 1.0 - vclr.b);
 				return mul(UNITY_MATRIX_MVP, v);
 			}
 
-			fixed4 frag(half2 uv, half4 csmr) : COLOR {
+			fixed4 frag(half2 uv : TEXCOORD0, half4 csmr : TEXCOORD1) : COLOR {
 				const float rpi = 0.31830988618;
 
 				half angle = (atan2(csmr.y, csmr.x) * rpi) * 0.5 + 0.5;
