@@ -9,6 +9,8 @@ public class Car : MonoBehaviour {
     public float acceleration = 20.0f;
     public float turningSpeed = 25.0f;
 
+    public int health = 1;
+
     [System.Serializable]
     public class OnDriveEvent : UnityEvent<bool> {}
     public OnDriveEvent onDrive;
@@ -16,6 +18,8 @@ public class Car : MonoBehaviour {
     [System.Serializable]
     public class OnSteerEvent : UnityEvent<float> {}
     public OnSteerEvent onSteer;
+
+    public UnityEvent onDeath;
 
     [HideInInspector]
     public Vector2 control {
@@ -53,5 +57,12 @@ public class Car : MonoBehaviour {
             inner.Rotate(Vector3.back, control.x * Time.fixedDeltaTime * Vector3.Dot(cachedBody.velocity, inner.up) * turningSpeed);
             cachedBody.AddForce(inner.up * Time.fixedDeltaTime * control.y * acceleration, ForceMode2D.Impulse);
         }
+    }
+
+    public void Hit() {
+        if (health <= 0) return;
+        if (--health > 0) return;
+
+        onDeath.Invoke();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public enum Sector {
     Red, Green, Blue
@@ -12,8 +13,35 @@ public class Pie : MonoBehaviour {
         set { cachedRenderer.color = (Vector4)(((Vector3)(Vector4) value).normalized); }
     }
 
+    public UnityEvent onSelfHit, onEnemyHit, onBounce;
+
     private Transform cachedXf;
     private SpriteRenderer cachedRenderer;
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        var otherPie = collision.gameObject.GetComponent<Pie>();
+        if (otherPie == null) return;
+
+        var myPoint = cachedXf.position;
+        var otherPoint = otherPie.transform.position;
+
+        var mySector = GetSector(otherPoint);
+        var otherSector = otherPie.GetSector(myPoint);
+
+        if (mySector == otherSector) {
+            onBounce.Invoke();
+            return;
+        }
+
+        bool morePowerful = mySector == Sector.Red && otherSector == Sector.Green ||
+            mySector == Sector.Green && otherSector == Sector.Blue ||
+            mySector == Sector.Blue && otherSector == Sector.Red;
+
+        if (morePowerful)
+            onSelfHit.Invoke();
+        else
+            onEnemyHit.Invoke();
+    }
 
     private void Awake() {
         cachedXf = transform;
