@@ -7,15 +7,15 @@ public class CameraFollow : MonoBehaviour {
     public float smoothness = 15.0f;
 
     private Transform cachedXf;
-    private Vector3 initialPosition, offset;
+    private Vector3 fromTarget, desiredPosition;
 
     private void Awake() {
         cachedXf = transform;
-        initialPosition = cachedXf.localPosition;
+        fromTarget = cachedXf.localPosition;
     }
 
     private void FixedUpdate() {
-        offset = Vector3.Lerp(offset, target.velocity * sensitivity, smoothness);
-        cachedXf.localPosition = initialPosition + offset;
+        desiredPosition = target.transform.position + fromTarget + (Vector3) target.velocity * sensitivity;
+        cachedXf.position = Vector3.Lerp(cachedXf.position, desiredPosition, Time.fixedDeltaTime * smoothness);
     }
 }
