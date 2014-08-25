@@ -9,7 +9,7 @@ public class Car : MonoBehaviour {
     public float acceleration = 20.0f;
     public float turningSpeed = 25.0f;
 
-    public int health = 1;
+    public float health = 100.0f;
 
     [System.Serializable]
     public class OnDriveEvent : UnityEvent<bool> {}
@@ -59,10 +59,12 @@ public class Car : MonoBehaviour {
         }
     }
 
-    public void Hit() {
-        if (health <= 0) return;
-        if (--health > 0) return;
+    public void Hit(float force) {
+        if (health <= Mathf.Epsilon) return;
 
-        onDeath.Invoke();
+        health -= force;
+
+        if (health <= Mathf.Epsilon)
+            onDeath.Invoke();
     }
 }
