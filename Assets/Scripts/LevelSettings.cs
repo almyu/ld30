@@ -9,8 +9,6 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
         public float chance;
     }
 
-    public GameObject[] skins;
-
     public Spawn[] mapObjects;
     public Spawn[] enemys;
 
@@ -24,7 +22,7 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 
         var player = GameObject.Find("Player/Inner/Visual").transform;
 
-        var skin = Instantiate(skins[id], new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
+        var skin = Instantiate(PlayerSettings.instance.skins[id], new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         skin.transform.parent = player;
     }
 }

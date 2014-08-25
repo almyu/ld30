@@ -16,25 +16,23 @@ public class PauseMenu : MonoBehaviour {
 
     public Text text;
 
-    private float timeScale;
-
     private BaseEventData pointer;
 
-    private void Awake() {
-        timeScale = Time.timeScale;
+    private bool pause = false;
 
+    private void Awake() {
         pointer = new BaseEventData(system);
     }
 
     private void Update() {
-        if (GameLogics.instance.isVictory) {
+        if (GameLogics.instance.isVictory && !pause) {
             ShowMenu(victoryText);
         }
-        else if (GameLogics.instance.isDefeat) {
+        else if (GameLogics.instance.isDefeat && !pause) {
             ShowMenu(defeatText);
         }
         else if (Input.GetButtonDown("Pause")) {
-            if (Time.timeScale == 0.0f) {
+            if (pause) {
                 HideMenu();
             }
             else {
@@ -44,33 +42,37 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void ShowMenu(string textMessage) {
+        pause = true;
+        text.text = textMessage;
         pointer.selectedObject = startSelected;
         system.SetSelectedGameObject(startSelected, pointer);
-        text.text = pauseText;
         Time.timeScale = 0.0f;
         window.SetActive(true);
     }
 
     public void HideMenu() {
-        Time.timeScale = timeScale;
+        pause = false;
+        Time.timeScale = 1.0f;
         window.SetActive(false);
         pointer.selectedObject = startSelected;
         system.SetSelectedGameObject(null, pointer);
     }
 
     public void YesButton() {
-        Time.timeScale = timeScale;
+        Time.timeScale = 1.0f;
         if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat) {
             PlayerPrefs.SetInt("NewGame", 1);
             Application.LoadLevel(GameLogics.instance.homeLevel);
         }
-        Application.LoadLevel(3);
+        else
+            Application.LoadLevel(3);
     }
 
     public void NoButton() {
-        Time.timeScale = timeScale;
+        Time.timeScale = 1.0f;
         if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat)
             Application.LoadLevel(3);
-        window.SetActive(false);
+        else
+            window.SetActive(false);
     }
 }

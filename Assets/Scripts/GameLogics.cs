@@ -18,11 +18,15 @@ public class GameLogics : MonoSingleton<GameLogics> {
 
         if (PlayerPrefs.GetInt("NewGame", 1) == 1) {
             ResetState();
+            PlayerPrefs.SetInt("NewGame", 0);
         }
 
         stats = new Vector3(PlayerPrefs.GetFloat("RustPoints", 100.0f),
                             PlayerPrefs.GetFloat("NeonPoints", 100.0f),
                             PlayerPrefs.GetFloat("WoodenPoints", 100.0f));
+
+        var player = GameObject.Find("Player").GetComponent<Car>();
+        player.onDeath.AddListener(() => Defeat());
     }
 
     private void Update() {
