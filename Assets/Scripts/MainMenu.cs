@@ -31,6 +31,7 @@ public class MainMenu : MonoBehaviour {
     private void Update() {
         neonSkin.position = new Vector3(Camera.main.ScreenToWorldPoint(neonButton.position).x, 0.0f, 0.0f);
         rustSkin.position = new Vector3(Camera.main.ScreenToWorldPoint(rustButton.position).x, 0.0f, 0.0f);
+        woodSkin.position = new Vector3(Camera.main.ScreenToWorldPoint(woodButton.position).x, 0.0f, 0.0f);
     }
 
     public void LoadLevel(int id) {
