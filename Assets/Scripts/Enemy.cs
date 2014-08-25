@@ -51,6 +51,9 @@ public class Enemy : MonoBehaviour {
     
     private void Remove() {
          Destroy(gameObject);
-         Spawns.instance.current--;
+    }
+
+    private void OnDestroy() { 
+        Spawns.instance.current--;
     }
 }
