@@ -8,7 +8,7 @@
 	}
 	SubShader {
 		Tags { "Queue"="Transparent" }
-		Lighting Off
+		Lighting Off ZWrite Off
 		Blend SrcColor One
 		
 		Pass {
