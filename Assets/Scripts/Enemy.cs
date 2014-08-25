@@ -31,7 +31,10 @@ public class Enemy : MonoBehaviour {
             cachedCar.control = ((time - angle / 2.0f) * cachedCar.inner.right + cachedCar.inner.up).normalized;
         }
         else {
-            cachedCar.control = (player.position - cachedTransform.position).normalized;
+            var dir = (player.position - cachedTransform.position).normalized;
+            cachedCar.control = new Vector3(Mathf.Lerp(cachedCar.inner.up.x, dir.x, Time.deltaTime * cachedCar.turningSpeed),
+                                            Mathf.Lerp(cachedCar.inner.up.y, dir.y, Time.deltaTime * cachedCar.turningSpeed),
+                                            0.0f);
             time = 0.0f;
         }
 
