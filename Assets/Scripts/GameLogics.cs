@@ -14,6 +14,8 @@ public class GameLogics : MonoSingleton<GameLogics> {
 
     public float killPoint = 5.0f;
 
+    public float maxPlayerHealth = 80.0f;
+
     private void Awake() {
         homeLevel = Session.homeLevel;
 

@@ -9,7 +9,7 @@ public static class Session {
     public static float stuff = 42.0f;
 
     public static int homeLevel = 0;
-    public static float helth = 10.0f;
+    public static float health = 80.0f;
 
     public static bool isNewGame = true;
 
