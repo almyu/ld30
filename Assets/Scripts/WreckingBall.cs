@@ -12,5 +12,7 @@ public class WreckingBall : MonoBehaviour {
         if (car == null) return;
 
         car.Hit(coll.relativeVelocity.magnitude * damage);
+
+        CameraFollow.instance.DetachTemporarily(1.0f);
     }
 }
