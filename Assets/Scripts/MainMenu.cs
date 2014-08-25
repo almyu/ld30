@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
@@ -6,6 +7,8 @@ public class MainMenu : MonoBehaviour {
 
     public EventSystem system;
     public GameObject startSelected;
+
+    public Toggle toggle;
 
     public Transform neonSkin;
     public Transform rustSkin;
@@ -21,6 +24,8 @@ public class MainMenu : MonoBehaviour {
         system.SetSelectedGameObject(startSelected, pointer);
 
         PlayerPrefs.SetInt("NewGame", 1);
+
+        toggle.isOn = PlayerPrefs.GetInt("DirectControl", 0) == 1;
     }
 
     private void Update() {
