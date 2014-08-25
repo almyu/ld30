@@ -19,10 +19,8 @@ public class Explosion : MonoBehaviour {
     public void Execute() {
         var enemys = Spawns.instance.GetComponentsInChildren<Rigidbody2D>();
         foreach (var enemy in enemys) {
-            if (Vector3.Distance(enemy.transform.position, cachedTransform.position) <= explosionRadius) {
+            if (Vector3.Distance(enemy.transform.position, cachedTransform.position) <= explosionRadius)
                 enemy.AddForce((enemy.transform.position - cachedTransform.position).normalized * force, ForceMode2D.Impulse);
-                Debug.Log((enemy.transform.position - cachedTransform.position).normalized * force);
-            }
         }
     }
 }
