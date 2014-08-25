@@ -7,6 +7,9 @@ public class Enemy : MonoBehaviour {
     private Transform cachedTransform;
     private Car cachedCar;
 
+    public float delay = 1.0f;
+    private float delayTimer = 0.0f;
+
     private float time = 0.0f;
 
     private float angle;
@@ -29,13 +32,17 @@ public class Enemy : MonoBehaviour {
 
         if (distance >= Spawns.instance.aggressionDistance) {
             cachedCar.control = ((time - angle / 2.0f) * cachedCar.inner.right + cachedCar.inner.up).normalized;
+            delayTimer = delay;
         }
         else {
-            var dir = (player.position - cachedTransform.position).normalized;
-            cachedCar.control = new Vector3(Mathf.Lerp(cachedCar.inner.up.x, dir.x, Time.deltaTime * cachedCar.turningSpeed),
-                                            Mathf.Lerp(cachedCar.inner.up.y, dir.y, Time.deltaTime * cachedCar.turningSpeed),
-                                            0.0f);
-            time = 0.0f;
+            delayTimer -= Time.deltaTime;
+            if (delayTimer <= 0.0f) {
+                var dir = (player.position - cachedTransform.position).normalized;
+                cachedCar.control = new Vector3(Mathf.Lerp(cachedCar.inner.up.x, dir.x, Time.deltaTime * cachedCar.turningSpeed),
+                                                Mathf.Lerp(cachedCar.inner.up.y, dir.y, Time.deltaTime * cachedCar.turningSpeed),
+                                                0.0f);
+                time = 0.0f;
+            }
         }
 
         if (!Spawns.instance.lifeRect.Contains(cachedTransform.position))
