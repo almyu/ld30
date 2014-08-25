@@ -67,4 +67,8 @@ public class Car : MonoBehaviour {
         if (health <= Mathf.Epsilon)
             onDeath.Invoke();
     }
+
+    public void Kill() {
+        Destroy(gameObject);
+    }
 }
