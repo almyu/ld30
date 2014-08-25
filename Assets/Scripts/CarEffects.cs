@@ -2,7 +2,7 @@
 
 public class CarEffects : MonoBehaviour {
 
-    public GameObject[] prefabs;
+    public GameObject sparksPrefab;
 
     private Transform cachedXf;
 
@@ -11,20 +11,13 @@ public class CarEffects : MonoBehaviour {
         cachedXf = transform;
     }
 
-    public void SpawnPrefab(string prefabName) {
-        foreach (var prefab in prefabs) {
-            if (prefab.name == prefabName) {
-                SpawnPrefab(prefab);
-                return;
-            }
-        }
-    }
-
     public void SpawnPrefab(GameObject prefab) {
-        var obj = (GameObject) Instantiate(prefab, cachedXf.position, cachedXf.rotation);
+        Instantiate(prefab, cachedXf.position, cachedXf.rotation);
     }
 
-    public void ShowImpactDamage(float force) {
-        print(name + " damage: " + force);
+    public void SpawnSparks(float force, Collision2D collision) {
+        var rotation = Quaternion.LookRotation(collision.relativeVelocity.normalized, Vector3.back);
+        var obj = (GameObject) Instantiate(sparksPrefab, collision.contacts[0].point, rotation);
+        Destroy(obj, 1.0f);
     }
 }

@@ -8,6 +8,10 @@ public class CarPhysics : MonoBehaviour {
     public class OnImpactEvent : UnityEvent<float> {}
     public OnImpactEvent onImpact;
 
+    [System.Serializable]
+    public class OnImpactDetailedEvent : UnityEvent<float, Collision2D> {}
+    public OnImpactDetailedEvent onImpactDetailed;
+
     private Transform cachedXf;
 
     private void Awake() {
@@ -15,6 +19,9 @@ public class CarPhysics : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        onImpact.Invoke(Mathf.Max(0.0f, -Vector2.Dot(cachedXf.up, collision.relativeVelocity)));
+        var force = Mathf.Max(0.0f, -Vector2.Dot(cachedXf.up, collision.relativeVelocity));
+
+        onImpact.Invoke(force);
+        onImpactDetailed.Invoke(force, collision);
     }
 }
