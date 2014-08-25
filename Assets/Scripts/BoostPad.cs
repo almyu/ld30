@@ -2,22 +2,21 @@
 using System.Collections;
 
 public class BoostPad : MonoBehaviour {
-
-    public AnimationClip clip;
-
+    
     public Transform icons;
     private Transform player;
+    private Animator cachedAnimator;
 
     private void Start() {
-    	player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Player").transform;
+        cachedAnimator = player.GetComponent<Animator>();
     }
 
     private void Update() {
-    	icons.up = -(player.position - icons.position).normalized;
+        icons.up = -(player.position - icons.position).normalized;
     }
     private void OnTriggerEnter2D(Collider2D other) {
-        other.gameObject.animation.clip = clip;
-        other.gameObject.animation.Play();
+        cachedAnimator.SetTrigger("Boost");
         Destroy(gameObject);
     }
 }
