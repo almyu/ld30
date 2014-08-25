@@ -8,7 +8,7 @@ public class TripleBar : MonoBehaviour {
     public RectTransform wooden;
 
     private void Update() {
-        var stats = WorldsStats.instance.statsNormalized;
+        var stats = GameLogics.instance.statsNormalized;
         rust.anchorMin = new Vector3(0.0f, 0,0f);
         rust.anchorMax = new Vector3(stats.x, 1,0f);
         neon.anchorMin = new Vector3(stats.x, 0,0f);

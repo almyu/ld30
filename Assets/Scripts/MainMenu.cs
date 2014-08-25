@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour {
+
+    public EventSystem system;
+    public GameObject startSelected;
 
     public Transform neonSkin;
     public Transform rustSkin;
@@ -12,9 +16,11 @@ public class MainMenu : MonoBehaviour {
     public RectTransform woodButton;
 
     private void Awake() {
-        PlayerPrefs.SetFloat("RustPoints", 100.0f);
-        PlayerPrefs.SetFloat("NeonPoints", 100.0f);
-        PlayerPrefs.SetFloat("WoodenPoints", 100.0f);
+        BaseEventData pointer = new BaseEventData(system);
+        pointer.selectedObject = startSelected;
+        system.SetSelectedGameObject(startSelected, pointer);
+
+        PlayerPrefs.SetInt("NewGame", 1);
     }
 
     private void Update() {
