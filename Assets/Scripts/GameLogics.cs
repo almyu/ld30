@@ -67,4 +67,12 @@ public class GameLogics : MonoSingleton<GameLogics> {
         PlayerPrefs.SetFloat("NeonPoints", 100.0f);
         PlayerPrefs.SetFloat("WoodenPoints", 100.0f);
     }
+
+    private void Defeat() {
+        isDefeat = true;
+    }
+
+    private void Victory() {
+        isVictory = true;
+    }
 }
