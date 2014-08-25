@@ -69,6 +69,20 @@ public class Car : MonoBehaviour {
     }
 
     public void Kill() {
+        if (gameObject.GetComponent<Enemy>().fraction != Session.homeLevel) {
+            switch (gameObject.GetComponent<Enemy>().fraction) {
+                case 0 :
+                    Session.stats.x = (Session.stats.x - GameLogics.instance.killPoint) <= 0.0f ? 1.0f : Session.stats.x - GameLogics.instance.killPoint;
+                    break;
+                case 1 :
+                    Session.stats.y = (Session.stats.y - GameLogics.instance.killPoint) <= 0.0f ? 1.0f : Session.stats.y - GameLogics.instance.killPoint;
+                    break;
+                case 2 :
+                    Session.stats.z = (Session.stats.z - GameLogics.instance.killPoint) <= 0.0f ? 1.0f : Session.stats.z - GameLogics.instance.killPoint;
+                    break;
+            }
+        }
+        Debug.Log(GameLogics.instance.statsNormalized);
         Destroy(gameObject);
     }
 }

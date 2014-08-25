@@ -61,8 +61,8 @@ public class PauseMenu : MonoBehaviour {
     public void YesButton() {
         Time.timeScale = 1.0f;
         if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat) {
-            PlayerPrefs.SetInt("NewGame", 1);
-            Application.LoadLevel(GameLogics.instance.homeLevel);
+            Session.isNewGame = true;
+            Application.LoadLevel(Session.homeLevel);
         }
         else
             Application.LoadLevel(3);

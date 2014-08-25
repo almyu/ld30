@@ -29,7 +29,7 @@ public class Spawns : MonoSingleton<Spawns> {
         for (int i = 0; i < LevelSettings.instance.enemys.Length; ++i)
             LevelSettings.instance.enemys[i].chance = LevelSettings.instance.enemys[i].chance / s;
 
-        var id = PlayerPrefs.GetInt("HomeLevel", 0);
+        var id = Session.homeLevel;
         if (id == LevelSettings.instance.levelIndex)
             aggressionDistance = 0.0f;
     }

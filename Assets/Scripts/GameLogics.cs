@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class GameLogics : MonoSingleton<GameLogics> {
-    public Vector3 stats;
 
     public float increasingRate = 4.0f;
 
@@ -13,37 +12,29 @@ public class GameLogics : MonoSingleton<GameLogics> {
     public float defeatFactor = 0.1f;
     public int homeLevel;
 
+    public float killPoint = 5.0f;
+
     private void Awake() {
-        homeLevel = PlayerPrefs.GetInt("HomeLevel", 0);
+        homeLevel = Session.homeLevel;
 
-        if (PlayerPrefs.GetInt("NewGame", 1) == 1) {
+        if (Session.isNewGame) {
             ResetState();
-            PlayerPrefs.SetInt("NewGame", 0);
+            Session.isNewGame = false;
         }
-
-        stats = new Vector3(PlayerPrefs.GetFloat("RustPoints", 100.0f),
-                            PlayerPrefs.GetFloat("NeonPoints", 100.0f),
-                            PlayerPrefs.GetFloat("WoodenPoints", 100.0f));
 
         var player = GameObject.Find("Player").GetComponent<Car>();
         player.onDeath.AddListener(() => Defeat());
     }
 
     private void Update() {
-        stats = new Vector3(homeLevel != 0 ? stats.x + Time.deltaTime * increasingRate : stats.x,
-                            homeLevel != 1 ? stats.y + Time.deltaTime * increasingRate : stats.y,
-                            homeLevel != 2 ? stats.z + Time.deltaTime * increasingRate : stats.z);
+        Session.stats = new Vector3(homeLevel != 0 ? Session.stats.x + Time.deltaTime * increasingRate : Session.stats.x,
+                            homeLevel != 1 ? Session.stats.y + Time.deltaTime * increasingRate : Session.stats.y,
+                            homeLevel != 2 ? Session.stats.z + Time.deltaTime * increasingRate : Session.stats.z);
 
         if (stateHome < defeatFactor)
             isDefeat = true;
         if (stateHome > victoryFactor)
             isVictory = true;
-    }
-
-    private void OnDestroy() {
-        PlayerPrefs.SetFloat("RustPoints", stats.x);
-        PlayerPrefs.SetFloat("NeonPoints", stats.y);
-        PlayerPrefs.SetFloat("WoodenPoints", stats.z);
     }
 
     public float stateHome {
@@ -60,16 +51,14 @@ public class GameLogics : MonoSingleton<GameLogics> {
 
     public Vector3 statsNormalized {
         get {
-            var s = stats.x + stats.y + stats.z;
+            var s = Session.stats.x + Session.stats.y + Session.stats.z;
         
-            return new Vector3(stats.x / s, stats.y / s, stats.z / s);
+            return new Vector3(Session.stats.x / s, Session.stats.y / s, Session.stats.z / s);
         }
     }
 
     public void ResetState() {
-        PlayerPrefs.SetFloat("RustPoints", 100.0f);
-        PlayerPrefs.SetFloat("NeonPoints", 100.0f);
-        PlayerPrefs.SetFloat("WoodenPoints", 100.0f);
+        Session.stats = Vector3.one * 100.0f;
     }
 
     private void Defeat() {

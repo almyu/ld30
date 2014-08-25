@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
     
+    public int fraction = 0;
+
     private Transform player;
     private Transform cachedTransform;
     private Car cachedCar;

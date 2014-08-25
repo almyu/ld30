@@ -20,7 +20,7 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 
     private void Awake() {
 
-        var id = PlayerPrefs.GetInt("HomeLevel", 0);
+        var id = Session.homeLevel;
 
         var player = GameObject.Find("Player/Inner/Visual").transform;
 

@@ -35,7 +35,8 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void LoadLevel(int id) {
-        PlayerPrefs.SetInt("HomeLevel", id);
+        Session.homeLevel = id;
+
         Application.LoadLevel(id);
     }
 
