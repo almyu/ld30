@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class CarPhysics : MonoBehaviour {
 
     public LayerMask damagingLayers = -1;
+    public float deadZone = 90.0f;
 
     [System.Serializable]
     public class OnImpactEvent : UnityEvent<float> {}
@@ -23,6 +24,7 @@ public class CarPhysics : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision) {
         var mask = 1 << collision.gameObject.layer;
         if ((damagingLayers.value & mask) == 0) return;
+        if (Vector2.Angle(cachedXf.up, collision.relativeVelocity) < deadZone * 0.5f) return;
 
         var force = Mathf.Max(0.0f, -Vector2.Dot(cachedXf.up, collision.relativeVelocity));
 
