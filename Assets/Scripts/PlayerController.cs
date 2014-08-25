@@ -3,6 +3,8 @@
 [RequireComponent(typeof(Car))]
 public class PlayerController : MonoSingleton<PlayerController> {
 
+	public bool isBoost = false;
+
     private Car cachedCar;
 
     private void Awake() {
@@ -11,7 +13,7 @@ public class PlayerController : MonoSingleton<PlayerController> {
     }
 
     private void Update() {
-        var vaxis = Input.GetAxis("Vertical");
+        var vaxis = isBoost ? 1.0f : Input.GetAxis("Vertical");
         cachedCar.control = new Vector2(Input.GetAxis("Horizontal"), vaxis * Mathf.Ceil(Mathf.Abs(vaxis)));
     }
 }
