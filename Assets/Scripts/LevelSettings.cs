@@ -22,10 +22,9 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 
         var id = PlayerPrefs.GetInt("HomeLevel", 0);
 
-        var player = GameObject.Find("Player");
-        var inner = player.GetComponent<Car>().inner;
+        var player = GameObject.Find("Player/Inner/Visual").transform;
 
         var skin = Instantiate(skins[id], new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-        skin.transform.parent = inner;
+        skin.transform.parent = player;
     }
 }
