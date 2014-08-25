@@ -1,29 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelSettings : MonoBehaviour {
+public class LevelSettings : MonoSingleton<LevelSettings> {
 
-    public static LevelSettings instance;
+    [System.Serializable]
+    public struct Spawn {
+        public GameObject prefab;
+        public float chance;
+    }
 
     public GameObject[] skins;
 
-    public enum LevelName{
-        RustEmpire,
-        NeonRepublic,
-        WoodenKingdom
-    };
+    public Spawn[] mapObjects;
+    public Spawn[] enemys;
 
-    public LevelName levelName;
+    public GameObject mapTile;
+
     public int levelIndex;
 
     private void Awake() {
-        instance = this;
-
-        switch (levelName) {
-            case LevelSettings.LevelName.RustEmpire : levelIndex = 0; break;
-            case LevelSettings.LevelName.NeonRepublic : levelIndex = 1; break;
-            case LevelSettings.LevelName.WoodenKingdom : levelIndex = 2; break;
-        }
 
         var id = PlayerPrefs.GetInt("HomeLevel", 0);
 

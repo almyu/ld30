@@ -1,17 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MapObjects : MonoBehaviour {
+public class MapObjects : MonoSingleton<MapObjects> {
 
-    [System.Serializable]
-    public struct Spawn {
-        public GameObject prefab;
-        public float chance;
-    }
-    
-    public static MapObjects instance;
-
-    public Spawn[] prefabs;
     private Transform[] mapObjects;
     
     private Rigidbody2D cachedPlayerRigidbody2D;
@@ -26,20 +17,20 @@ public class MapObjects : MonoBehaviour {
     public int max = 3;
     
     private void Awake() {
-        instance = this;
-        
         cachedTransform = transform;
         
+        mapObjects = new Transform[max];
+    }
+        
+    private void Start() {
         cachedPlayerRigidbody2D = Camera.main.GetComponent<CameraFollow>().target;
 
-        mapObjects = new Transform[max];
-        
         var s = 0.0f;
-        foreach (var spawn in prefabs)
+        foreach (var spawn in LevelSettings.instance.mapObjects)
             s += spawn.chance;
         
-        for (int i = 0; i < prefabs.Length; ++i)
-            prefabs[i].chance = prefabs[i].chance / s;
+        for (int i = 0; i < LevelSettings.instance.mapObjects.Length; ++i)
+            LevelSettings.instance.mapObjects[i].chance = LevelSettings.instance.mapObjects[i].chance / s;
     }
 
     private void Update() {
@@ -59,9 +50,9 @@ public class MapObjects : MonoBehaviour {
                     position = new Vector2(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax));
                 } while(cameraRect.Contains(position) || CloseObjects(position));
             
-                GameObject prefab = prefabs[0].prefab;
+                GameObject prefab = LevelSettings.instance.mapObjects[0].prefab;
                 var r = Random.value;
-                foreach (var spawn in prefabs) {
+                foreach (var spawn in LevelSettings.instance.mapObjects) {
                     if (spawn.chance <= r) {
                         r -= spawn.chance;
                         continue;

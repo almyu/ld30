@@ -1,20 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Spawns : MonoBehaviour {
-
-    [System.Serializable]
-    public struct Spawn {
-        public GameObject prefab;
-        public float chance;
-    }
-    
-    public static Spawns instance;
+public class Spawns : MonoSingleton<Spawns> {    
 
     public float lifeDistance = 20.0f;
     public float aggressionDistance = 5.0f;
-
-    public Spawn[] spawns;
     
     private Rigidbody2D cachedPlayerRigidbody2D;
     private Transform cachedTransform;
@@ -29,24 +19,23 @@ public class Spawns : MonoBehaviour {
     public int current = 0;
     
     private void Awake() {
-        instance = this;
         
         cachedTransform = transform;
         
-        cachedPlayerRigidbody2D = Camera.main.GetComponent<CameraFollow>().target;
-        
         var s = 0.0f;
-        foreach (var spawn in spawns)
+        foreach (var spawn in LevelSettings.instance.enemys)
             s += spawn.chance;
         
-        for (int i = 0; i < spawns.Length; ++i)
-            spawns[i].chance = spawns[i].chance / s; 
-    }
+        for (int i = 0; i < LevelSettings.instance.enemys.Length; ++i)
+            LevelSettings.instance.enemys[i].chance = LevelSettings.instance.enemys[i].chance / s;
 
-    private void Start() {
         var id = PlayerPrefs.GetInt("HomeLevel", 0);
         if (id == LevelSettings.instance.levelIndex)
             aggressionDistance = 0.0f;
+    }
+
+    private void Start() {
+        cachedPlayerRigidbody2D = Camera.main.GetComponent<CameraFollow>().target;
     }
 
     private void Update() {
@@ -61,9 +50,9 @@ public class Spawns : MonoBehaviour {
                 position = new Vector2(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax));
             } while(cameraRect.Contains(position));
             
-            GameObject prefab = spawns[0].prefab;
+            GameObject prefab = LevelSettings.instance.enemys[0].prefab;
             var r = Random.value;
-            foreach (var spawn in spawns) {
+            foreach (var spawn in LevelSettings.instance.enemys) {
                 if (spawn.chance <= r) {
                     r -= spawn.chance;
                     continue;

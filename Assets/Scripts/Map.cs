@@ -78,8 +78,6 @@ public class Map : MonoBehaviour {
             get { return cols[(indexCols - 1) < 0 ? cols.Length - 1 : indexCols - 1]; }
         }
     }
-
-    public GameObject prefab;
     
     public float cameraFactor = 1.4f;
     public float tilesSize = 4;
@@ -93,7 +91,7 @@ public class Map : MonoBehaviour {
     private void Start() {
         cachedTransform = transform;
 
-        var size = prefab.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
+        var size = LevelSettings.instance.mapTile.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
         
         var tileRect = CameraUtility.instance.ScaleRect(tilesSize);
         
@@ -102,7 +100,7 @@ public class Map : MonoBehaviour {
         int i = 0, j = 0;
         for (var x = tileRect.xMin; x <= tileRect.xMax; x += size) {
             for (var y = tileRect.yMin; y <= tileRect.yMax; y += size) {
-                var tile = Instantiate(prefab, new Vector3(x, y, 0.0f), Quaternion.identity) as GameObject;
+                var tile = Instantiate(LevelSettings.instance.mapTile, new Vector3(x, y, 0.0f), Quaternion.identity) as GameObject;
                 tile.transform.parent = cachedTransform;
                 tempMaps.Add(tile.transform);
                 j++;

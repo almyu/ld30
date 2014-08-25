@@ -12,6 +12,8 @@ public class CameraFollow : MonoBehaviour {
     private void Awake() {
         cachedXf = transform;
         fromTarget = cachedXf.localPosition;
+
+        target = GameObject.Find("Player").rigidbody2D;
     }
 
     private void FixedUpdate() {

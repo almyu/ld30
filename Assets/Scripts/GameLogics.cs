@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameLogics : MonoBehaviour {
-
-    public static GameLogics instance;
-
+public class GameLogics : MonoSingleton<GameLogics> {
     public Vector3 stats;
 
     public float increasingRate = 4.0f;
@@ -17,8 +14,6 @@ public class GameLogics : MonoBehaviour {
     public int homeLevel;
 
     private void Awake() {
-        instance = this;
-
         homeLevel = PlayerPrefs.GetInt("HomeLevel", 0);
 
         if (PlayerPrefs.GetInt("NewGame", 1) == 1) {
