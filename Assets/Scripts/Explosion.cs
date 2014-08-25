@@ -12,10 +12,6 @@ public class Explosion : MonoBehaviour {
         cachedTransform = transform;
     }
 
-    private void Update() {
-    
-    }
-
     public void Execute() {
         var enemys = Spawns.instance.GetComponentsInChildren<Rigidbody2D>();
         foreach (var enemy in enemys) {
