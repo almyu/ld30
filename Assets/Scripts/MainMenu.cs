@@ -37,7 +37,7 @@ public class MainMenu : MonoBehaviour {
     public void LoadLevel(int id) {
         Session.homeLevel = id;
 
-        Application.LoadLevel(id);
+        Application.LoadLevel(id + 1);
     }
 
     public void ChangeMod(bool active) {

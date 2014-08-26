@@ -62,16 +62,16 @@ public class PauseMenu : MonoBehaviour {
         Time.timeScale = 1.0f;
         if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat) {
             Session.isNewGame = true;
-            Application.LoadLevel(Session.homeLevel);
+            Application.LoadLevel(Session.homeLevel + 1);
         }
         else
-            Application.LoadLevel(3);
+            Application.LoadLevel(0);
     }
 
     public void NoButton() {
         Time.timeScale = 1.0f;
         if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat)
-            Application.LoadLevel(3);
+            Application.LoadLevel(0);
         else
             window.SetActive(false);
     }

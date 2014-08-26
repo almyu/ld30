@@ -20,6 +20,6 @@ public class Portal : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Application.LoadLevel(course);
+        Application.LoadLevel(course + 1);
     }
 }
