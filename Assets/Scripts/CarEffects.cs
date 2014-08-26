@@ -11,7 +11,7 @@ public class CarEffects : MonoBehaviour {
         cachedXf = transform;
     }
 
-    public void SpawnPrefab(GameObject prefab) {
+    public GameObject SpawnPrefabInternal(GameObject prefab) {
         var obj = (GameObject) Instantiate(prefab, cachedXf.position, cachedXf.rotation);
 
         var pss = obj.GetComponentsInChildren<ParticleSystem>();
@@ -26,6 +26,17 @@ public class CarEffects : MonoBehaviour {
             if (lifetime > 0.0f)
                 Destroy(obj, lifetime);
         }
+
+        return obj;
+    }
+
+    public void SpawnPrefab(GameObject prefab) {
+        SpawnPrefabInternal(prefab);
+    }
+
+    public void SpawnPrefabAttached(GameObject prefab) {
+        var obj = SpawnPrefabInternal(prefab);
+        obj.transform.parent = cachedXf;
     }
 
     public void SpawnSparks(float force, Collision2D collision) {
