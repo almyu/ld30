@@ -9,6 +9,8 @@ public class Car : MonoBehaviour {
     public float acceleration = 20.0f;
     public float turningSpeed = 25.0f;
 
+    public Vector2 accelerationFactor = Vector2.one;
+
     public float health = 100.0f;
 
     [System.Serializable]
@@ -47,15 +49,15 @@ public class Car : MonoBehaviour {
 
     private void FixedUpdate() {
         if (directControl) {
-            cachedBody.AddForce(control * Time.fixedDeltaTime * acceleration, ForceMode2D.Impulse);
+            cachedBody.AddForce(Vector2.Scale(control, accelerationFactor) * Time.fixedDeltaTime * acceleration, ForceMode2D.Impulse);
 
             var vel = cachedBody.velocity;
             if (vel.sqrMagnitude >= Mathf.Epsilon)
                 inner.up = Vector2.Lerp(inner.up, vel.normalized, Time.fixedDeltaTime * turningSpeed * 1.5f);
         }
         else {
-            inner.Rotate(Vector3.back, control.x * Time.fixedDeltaTime * Vector3.Dot(cachedBody.velocity, inner.up) * turningSpeed);
-            cachedBody.AddForce(inner.up * Time.fixedDeltaTime * control.y * acceleration, ForceMode2D.Impulse);
+            inner.Rotate(Vector3.back, control.x * Time.fixedDeltaTime * Vector3.Dot(cachedBody.velocity, inner.up) * turningSpeed * accelerationFactor.x);
+            cachedBody.AddForce(inner.up * Time.fixedDeltaTime * control.y * acceleration * accelerationFactor.y, ForceMode2D.Impulse);
         }
     }
 

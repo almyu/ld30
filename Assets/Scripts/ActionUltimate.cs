@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem), typeof(Collider2D))]
+[RequireComponent(typeof(Collider2D))]
 public class ActionUltimate : MonoBehaviour {
 
     public LayerMask enemyLayers = -1;
