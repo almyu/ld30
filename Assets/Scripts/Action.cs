@@ -44,5 +44,6 @@ public class Action : MonoBehaviour {
         }
 
         onUse.Invoke();
+        durationTimer = duration;
     }
 }
