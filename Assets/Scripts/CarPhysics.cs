@@ -6,12 +6,13 @@ public class CarPhysics : MonoBehaviour {
 
     public Transform innerXf;
 
+    public LayerMask soundingLayers = -1;
     public LayerMask damagingLayers = -1;
     public float deadZone = 90.0f;
 
     [System.Serializable]
     public class OnImpactEvent : UnityEvent<float> {}
-    public OnImpactEvent onImpact;
+    public OnImpactEvent onAnyImpact, onImpact;
 
     [System.Serializable]
     public class OnImpactDetailedEvent : UnityEvent<float, Collision2D> {}
@@ -24,6 +25,10 @@ public class CarPhysics : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         var mask = 1 << collision.gameObject.layer;
+
+        if ((soundingLayers.value & mask) != 0)
+            onAnyImpact.Invoke(collision.relativeVelocity.magnitude);
+
         if ((damagingLayers.value & mask) == 0) return;
         if (Vector2.Angle(innerXf.up, collision.relativeVelocity) < deadZone * 0.5f) return;
 
