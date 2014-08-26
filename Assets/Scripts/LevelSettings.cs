@@ -10,6 +10,7 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
     }
 
     public Spawn[] mapObjects;
+    public Spawn[] mapInactiveObjects;
     public Spawn[] enemys;
 
     public GameObject mapTile;

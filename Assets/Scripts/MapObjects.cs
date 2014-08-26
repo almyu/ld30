@@ -4,6 +4,7 @@ using System.Collections;
 public class MapObjects : MonoSingleton<MapObjects> {
 
     private Transform[] mapObjects;
+    private Transform[] mapInactiveObjects;
     
     private Rigidbody2D cachedPlayerRigidbody2D;
     private Transform cachedTransform;
@@ -15,11 +16,14 @@ public class MapObjects : MonoSingleton<MapObjects> {
     public float minDistance = 10.0f;
     
     public int max = 3;
+    public int maxInactive = 3;
     
     private void Awake() {
         cachedTransform = transform;
         
         mapObjects = new Transform[max];
+
+        mapInactiveObjects = new Transform[maxInactive];
     }
         
     private void Start() {
@@ -31,6 +35,13 @@ public class MapObjects : MonoSingleton<MapObjects> {
         
         for (int i = 0; i < LevelSettings.instance.mapObjects.Length; ++i)
             LevelSettings.instance.mapObjects[i].chance = LevelSettings.instance.mapObjects[i].chance / s;
+
+        s = 0.0f;
+        foreach (var spawn in LevelSettings.instance.mapInactiveObjects)
+            s += spawn.chance;
+        
+        for (int i = 0; i < LevelSettings.instance.mapInactiveObjects.Length; ++i)
+            LevelSettings.instance.mapInactiveObjects[i].chance = LevelSettings.instance.mapInactiveObjects[i].chance / s;
     }
 
     private void Update() {
@@ -69,12 +80,57 @@ public class MapObjects : MonoSingleton<MapObjects> {
                 mapObjects[i].parent = cachedTransform;
             }
         }
+
+        for (int i = 0; i < mapInactiveObjects.Length; ++i) {
+            if (mapInactiveObjects[i] != null && !lifeRect.Contains(mapInactiveObjects[i].position)) {
+                Destroy(mapInactiveObjects[i].gameObject);
+            }
+
+            if (mapInactiveObjects[i] == null) {
+                var cameraRect = CameraUtility.instance.ScaleRect(cameraFactor);
+                var velocity = cachedPlayerRigidbody2D.velocity;
+                var spawnRect = CameraUtility.instance.ScaleRect(speedFactor, velocity);
+                
+                Vector3 position;
+                do {
+                    position = new Vector2(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax));
+                } while(cameraRect.Contains(position) || CloseInactiveObjects(position));
+            
+                GameObject prefab = LevelSettings.instance.mapInactiveObjects[0].prefab;
+                var r = Random.value;
+                foreach (var spawn in LevelSettings.instance.mapInactiveObjects) {
+                    if (spawn.chance <= r) {
+                        r -= spawn.chance;
+                        continue;
+                    }
+                    prefab = spawn.prefab;
+                    break;
+                }
+    
+                var rotation = Quaternion.identity;
+                rotation.eulerAngles = new Vector3(0.0f, 0.0f, Random.Range(-180.0f, 180.0f));
+    
+                var mapObject = Instantiate(prefab, position, rotation) as GameObject;
+                mapInactiveObjects[i] = mapObject.transform;
+                mapInactiveObjects[i].parent = cachedTransform;
+            }
+        }
     }
 
     private bool CloseObjects(Vector3 position) {
         for (int i = 0; i < mapObjects.Length; ++i) {
             if (mapObjects[i] != null) {
                 if (Vector3.Distance(mapObjects[i].position, position) <= minDistance) 
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private bool CloseInactiveObjects(Vector3 position) {
+        for (int i = 0; i < mapInactiveObjects.Length; ++i) {
+            if (mapInactiveObjects[i] != null) {
+                if (Vector3.Distance(mapInactiveObjects[i].position, position) <= minDistance) 
                     return true;
             }
         }

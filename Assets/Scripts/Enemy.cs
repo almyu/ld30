@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour {
     private Transform cachedTransform;
     private Car cachedCar;
 
+    public float killPoint = 7.0f;
+
     public float delay = 1.0f;
     private float delayTimer = 0.0f;
 

@@ -12,8 +12,6 @@ public class GameLogics : MonoSingleton<GameLogics> {
     public float defeatFactor = 0.1f;
     public int homeLevel;
 
-    public float killPoint = 5.0f;
-
     public float maxPlayerHealth = 80.0f;
 
     private void Awake() {
