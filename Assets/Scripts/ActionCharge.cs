@@ -14,7 +14,7 @@ public class ActionCharge : MonoBehaviour {
     private void OnEnable() {
         collider.enabled = false;
 
-        car.accelerationFactor = new Vector2(0.0f, power);
+        car.accelerationFactor = new Vector2(0.0f, power * 0.7f);
 
         controller.isBoost = true;
 
