@@ -69,6 +69,7 @@ public class Car : MonoBehaviour {
     }
 
     public void Kill() {
+        Sounds.instance.PlayFenderBender();
         var enemy = gameObject.GetComponent<Enemy>();
         if (enemy.fraction != Session.homeLevel) {
             switch (enemy.fraction) {

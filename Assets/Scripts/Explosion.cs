@@ -6,6 +6,8 @@ public class Explosion : MonoBehaviour {
     public float explosionRadius = 3.0f;
     public float force = 5.0f;
 
+    public AudioSource source;
+
     private Transform cachedTransform;
 
     private void Awake() {
@@ -13,6 +15,7 @@ public class Explosion : MonoBehaviour {
     }
 
     public void Execute() {
+        source.Play();
         var enemys = Spawns.instance.GetComponentsInChildren<Rigidbody2D>();
         foreach (var enemy in enemys) {
             if (Vector3.Distance(enemy.transform.position, cachedTransform.position) <= explosionRadius) {

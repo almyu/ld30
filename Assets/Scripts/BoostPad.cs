@@ -16,6 +16,7 @@ public class BoostPad : MonoBehaviour {
         icons.up = -(player.position - icons.position).normalized;
     }
     private void OnTriggerEnter2D(Collider2D other) {
+        Sounds.instance.PlayBoost();
         cachedAnimator.SetTrigger("Boost");
         Destroy(gameObject);
     }
