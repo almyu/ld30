@@ -59,6 +59,7 @@ public class GameLogics : MonoSingleton<GameLogics> {
 
     public void ResetState() {
         Session.stats = Vector3.one * 100.0f;
+        Session.health = maxPlayerHealth;
     }
 
     private void Defeat() {
