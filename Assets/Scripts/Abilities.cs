@@ -10,9 +10,13 @@ public class Abilities : MonoBehaviour {
 
 	public Action[] actions = new Action[4];
 
+    private void Awake() {
+        actions = FindObjectsOfType<Action>();
+    }
+
     private void Update() {
-    	for (int i = 0; i < 4; ++i) {
-    		if(actions[i].cooldown != 0.0f) {
+    	for (int i = 0; i < actions.Length; ++i) {
+    		if(actions[i].cooldownTimer != 0.0f) {
 				imageActions[i].color = inactiveColor;
 				textActions[i].text = actions[i].cooldown.ToString();
     		}

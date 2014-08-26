@@ -13,8 +13,8 @@ public class Action : MonoBehaviour {
     public class OnCooldownChangedEvent : UnityEvent<string> {}
     public OnCooldownChangedEvent onCooldownChanged;
 
-    private float durationTimer = 0.0f;
-    private float cooldownTimer = 0.0f;
+    [HideInInspector] public float durationTimer = 0.0f;
+    [HideInInspector] public float cooldownTimer = 0.0f;
 
     private void Update() {
         var newCooldownTimer = Mathf.Max(0.0f, cooldownTimer - Time.deltaTime);
