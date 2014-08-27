@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class Explosion : MonoBehaviour {
@@ -24,5 +25,7 @@ public class Explosion : MonoBehaviour {
                 car.Hit(30.0f);
             }
         }
+
+        LandingEffect.instance.Spawn();
     }
 }
