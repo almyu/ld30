@@ -27,7 +27,7 @@ public class Abilities : MonoBehaviour {
         for (int i = 0; i < actions.Length; ++i) {
             if(actions[i].cooldownTimer != 0.0f) {
                 imageActions[i].color = inactiveColor;
-                textActions[i].text = actions[i].cooldownTimer.ToString("n1");
+                textActions[i].text = Mathf.CeilToInt(actions[i].cooldownTimer).ToString();
             }
             else {
                 imageActions[i].color = activeColor;
