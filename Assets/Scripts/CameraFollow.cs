@@ -23,7 +23,10 @@ public class CameraFollow : MonoSingleton<CameraFollow> {
         detachTimer = Mathf.Max(0.0f, detachTimer - Time.fixedDeltaTime);
         var catchup = Mathf.Clamp01(Mathf.Pow(detachTimer, shakeExponent));
 
-        var desiredPosition = target.transform.position + fromTarget + (Vector3) target.velocity * sensitivity * (1.0f - catchup);
+        var desiredOffset = (Vector3) target.velocity * sensitivity * (1.0f - catchup);
+        desiredOffset = desiredOffset.normalized * Mathf.Min(camera.orthographicSize, desiredOffset.magnitude);
+
+        var desiredPosition = target.transform.position + fromTarget + desiredOffset;
         cachedXf.position = Vector3.Lerp(cachedXf.position, desiredPosition, Time.fixedDeltaTime * smoothness) + Random.insideUnitSphere * shakePower * catchup;
     }
 
