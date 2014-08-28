@@ -60,10 +60,10 @@ public class PauseMenu : MonoBehaviour {
 
     public void YesButton() {
         Time.timeScale = 1.0f;
-        if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat) {
-            Session.isNewGame = true;
+        Session.isNewGame = true;
+
+        if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat)
             Application.LoadLevel(Session.homeLevel + 1);
-        }
         else
             Application.LoadLevel(0);
     }

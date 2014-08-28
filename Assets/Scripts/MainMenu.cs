@@ -26,6 +26,8 @@ public class MainMenu : MonoBehaviour {
         PlayerPrefs.SetInt("NewGame", 1);
 
         toggle.isOn = PlayerPrefs.GetInt("DirectControl", 0) == 1;
+
+        Session.ClearDicts();
     }
 
     private void Update() {
