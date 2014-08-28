@@ -12,11 +12,15 @@ public class PlayerController : MonoSingleton<PlayerController> {
         cachedCar = GetComponent<Car>();
         cachedCar.directControl = PlayerPrefs.GetInt("DirectControl", 0) != 0;
 
-        cachedCar.control = Session.vectors.Get("LastControl", Vector3.zero);
+        cachedCar.control = Session.vectors.Get("LastControl");
+        cachedCar.rigidbody2D.velocity = Session.vectors.Get("LastVelocity");
+        cachedCar.inner.transform.up = Session.vectors.Get("LastDirection", Vector2.up);
     }
 
     private void OnDestroy() {
         Session.vectors.Set("LastControl", cachedCar.control);
+        Session.vectors.Set("LastVelocity", cachedCar.rigidbody2D.velocity);
+        Session.vectors.Set("LastDirection", cachedCar.inner.transform.up);
     }
 
     private Vector2 GetAxes() {

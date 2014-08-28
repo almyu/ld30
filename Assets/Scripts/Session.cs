@@ -26,6 +26,10 @@ public static class Session {
             return value;
         }
 
+        public T Get(string key) {
+            return Get(key, default(T));
+        }
+
         public void Set(string key, T value) {
             storage[key] = value;
         }
