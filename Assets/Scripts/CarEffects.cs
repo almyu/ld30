@@ -40,6 +40,8 @@ public class CarEffects : MonoBehaviour {
     }
 
     public void SpawnSparks(float force, Collision2D collision) {
+        if (collision.relativeVelocity.sqrMagnitude < Mathf.Epsilon) return;
+
         var rotation = Quaternion.LookRotation(collision.relativeVelocity.normalized, Vector3.back);
         var obj = (GameObject) Instantiate(sparksPrefab, collision.contacts[0].point, rotation);
         var ps = obj.GetComponent<ParticleSystem>();
