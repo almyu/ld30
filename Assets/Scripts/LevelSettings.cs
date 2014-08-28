@@ -33,5 +33,8 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 
         var skin = Instantiate(PlayerSettings.instance.skins[id], new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         skin.transform.parent = player;
+
+        foreach (var spriteRenderer in skin.GetComponentsInChildren<SpriteRenderer>())
+            ++spriteRenderer.sortingOrder;
     }
 }
