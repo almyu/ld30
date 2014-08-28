@@ -16,6 +16,14 @@ public class Action : MonoBehaviour {
     [HideInInspector] public float durationTimer = 0.0f;
     [HideInInspector] public float cooldownTimer = 0.0f;
 
+    private void Awake() {
+        cooldownTimer = Session.floats.Get(name + "Cooldown", 0.0f);
+    }
+
+    private void OnDestroy() {
+        Session.floats.Set(name + "Cooldown", cooldownTimer);
+    }
+
     private void Update() {
         var newCooldownTimer = Mathf.Max(0.0f, cooldownTimer - Time.deltaTime);
         var newDurationTimer = Mathf.Max(0.0f, durationTimer - Time.deltaTime);
