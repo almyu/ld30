@@ -9,7 +9,7 @@ public class SoundsPlayer : MonoSingleton<SoundsPlayer> {
 
     private void Awake() {
         engine.clip = PlayerSettings.instance.engineClip[Session.homeLevel];
-        engine.Play();
+        //engine.Play();
     }
 
     private void Update() {
