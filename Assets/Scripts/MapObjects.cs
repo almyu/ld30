@@ -15,15 +15,18 @@ public class MapObjects : MonoSingleton<MapObjects> {
 
     public float minDistance = 10.0f;
 
-    public int max = 3;
-    public int maxInactive = 3;
-
     private void Awake() {
         cachedTransform = transform;
-        
-        mapObjects = new Transform[max];
 
-        mapInactiveObjects = new Transform[maxInactive];
+        var cameraRect = CameraUtility.instance.ScaleRect(cameraFactor);
+        var spawnRect = CameraUtility.instance.ScaleRect(speedFactor);
+
+        var sc = minDistance * minDistance * Mathf.PI / 3.5f;
+         max = (spawnRect.width * spawnRect.height - cameraRect.width * cameraRect.height) / sc;
+
+        mapObjects = new Transform[(int) c];
+
+        mapInactiveObjects = new Transform[(int) (c / 2)];
     }
         
     private void Start() {
