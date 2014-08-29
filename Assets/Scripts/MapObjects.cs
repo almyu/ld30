@@ -17,7 +17,9 @@ public class MapObjects : MonoSingleton<MapObjects> {
 
     private void Awake() {
         cachedTransform = transform;
-
+    }
+        
+    private void Start() {
         var cameraRect = CameraUtility.instance.ScaleRect(cameraFactor);
         var spawnRect = CameraUtility.instance.ScaleRect(speedFactor);
 
@@ -27,9 +29,8 @@ public class MapObjects : MonoSingleton<MapObjects> {
         mapObjects = new Transform[(int) max];
 
         mapInactiveObjects = new Transform[(int) (max / 2)];
-    }
-        
-    private void Start() {
+
+
         cachedPlayerRigidbody2D = Camera.main.GetComponent<CameraFollow>().target;
 
         var s = 0.0f;

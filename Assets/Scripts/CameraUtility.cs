@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraUtility : MonoBehaviour {
-
-	public static CameraUtility instance;
+public class CameraUtility : MonoSingleton<CameraUtility> {
 
 	public float width, height;
 
@@ -12,8 +10,6 @@ public class CameraUtility : MonoBehaviour {
 	private Transform cachedTransform;
 
     private void Awake() {
-    	instance = this;
-
     	height = 2f * Camera.main.orthographicSize;
     	width = height * Camera.main.aspect;
 
