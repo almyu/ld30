@@ -11,9 +11,7 @@ public class PauseMenu : MonoBehaviour {
     public GameObject startSelected;
 
     public string pauseText;
-    public string victoryText;
-    public string defeatText;
-
+    
     public Text text;
 
     private BaseEventData pointer;
@@ -25,14 +23,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     private void Update() {
-
-        if (GameLogics.instance.isVictory && !pause) {
-            ShowMenu(victoryText);
-        }
-        else if (GameLogics.instance.isDefeat && !pause) {
-            ShowMenu(defeatText);
-        }
-        else if (Input.GetButtonDown("Pause")) {
+        if (!GameLogics.instance.isVictory && !GameLogics.instance.isDefeat && Input.GetButtonDown("Pause")) {
             if (pause) {
                 HideMenu();
             }
