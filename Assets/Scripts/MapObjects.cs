@@ -22,11 +22,11 @@ public class MapObjects : MonoSingleton<MapObjects> {
         var spawnRect = CameraUtility.instance.ScaleRect(speedFactor);
 
         var sc = minDistance * minDistance * Mathf.PI / 3.5f;
-         max = (spawnRect.width * spawnRect.height - cameraRect.width * cameraRect.height) / sc;
+        var max = (spawnRect.width * spawnRect.height - cameraRect.width * cameraRect.height) / sc;
 
-        mapObjects = new Transform[(int) c];
+        mapObjects = new Transform[(int) max];
 
-        mapInactiveObjects = new Transform[(int) (c / 2)];
+        mapInactiveObjects = new Transform[(int) (max / 2)];
     }
         
     private void Start() {
