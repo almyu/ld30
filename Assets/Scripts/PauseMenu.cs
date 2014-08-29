@@ -11,7 +11,7 @@ public class PauseMenu : MonoBehaviour {
     public GameObject startSelected;
 
     public string pauseText;
-    
+
     public Text text;
 
     private BaseEventData pointer;
@@ -46,25 +46,18 @@ public class PauseMenu : MonoBehaviour {
         pause = false;
         Time.timeScale = 1.0f;
         window.SetActive(false);
-        pointer.selectedObject = startSelected;
+        pointer.selectedObject = null;
         system.SetSelectedGameObject(null, pointer);
     }
 
     public void YesButton() {
         Time.timeScale = 1.0f;
         Session.isNewGame = true;
-
-        if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat)
-            Application.LoadLevel(Session.homeLevel + 1);
-        else
-            Application.LoadLevel(0);
+        Application.LoadLevel(0);
     }
 
     public void NoButton() {
         Time.timeScale = 1.0f;
-        if (GameLogics.instance.isVictory || GameLogics.instance.isDefeat)
-            Application.LoadLevel(0);
-        else
-            window.SetActive(false);
+        window.SetActive(false);
     }
 }
