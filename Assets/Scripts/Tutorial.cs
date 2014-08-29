@@ -10,6 +10,13 @@ public class Tutorial : MonoBehaviour {
     public float fadeoutStart = 5.0f, fadeoutTime = 5.0f;
 
     private void Awake() {
+        if (Session.bools.Get("TutorialShown")) {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        Session.bools.Set("TutorialShown", true);
+
         var hexColor = colorRefs[Session.homeLevel].color.ReplaceA(1.0f).ToHexString();
         var factionText = "<color=#" + hexColor + ">" + factionColorNames[Session.homeLevel] + "</color>";
 
