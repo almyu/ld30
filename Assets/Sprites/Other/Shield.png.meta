@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 7fd0a5354581f5c41943a9ed7731e150
+guid: 364b6dc49124b6d4bad05ee4835bd141
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Pie_ultimate
+    21300000: Shield
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +38,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 286
+  spritePixelsToUnits: 100
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []

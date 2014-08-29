@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 47d0a9671b73b814fa3e1ef071124a44
+guid: 211b1befed797e44a95551c665a5a1ef
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Charge
+    21300000: Pie_Steel_Circle
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -26,9 +26,9 @@ TextureImporter:
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 1
     mipBias: -1
-    wrapMode: -1
+    wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
