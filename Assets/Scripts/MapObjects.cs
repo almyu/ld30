@@ -14,10 +14,10 @@ public class MapObjects : MonoSingleton<MapObjects> {
     public float lifeFactor = 8.0f;
 
     public float minDistance = 10.0f;
-    
+
     public int max = 3;
     public int maxInactive = 3;
-    
+
     private void Awake() {
         cachedTransform = transform;
         
@@ -61,7 +61,9 @@ public class MapObjects : MonoSingleton<MapObjects> {
                     position = new Vector2(Random.Range(spawnRect.xMin, spawnRect.xMax), Random.Range(spawnRect.yMin, spawnRect.yMax));
                 } while(cameraRect.Contains(position) || CloseObjects(position));
             
-                GameObject prefab = LevelSettings.instance.mapObjects[0].prefab;
+                var prefab = LevelSettings.instance.mapObjects[0].prefab;
+                var rotationRange = Vector2.zero;
+
                 var r = Random.value;
                 foreach (var spawn in LevelSettings.instance.mapObjects) {
                     if (spawn.chance <= r) {
@@ -69,11 +71,11 @@ public class MapObjects : MonoSingleton<MapObjects> {
                         continue;
                     }
                     prefab = spawn.prefab;
+                    rotationRange = spawn.constrainRotation ? spawn.rotationConstraint : new Vector2(-180.0f, 180.0f);
                     break;
                 }
     
-                var rotation = Quaternion.identity;
-                rotation.eulerAngles = new Vector3(0.0f, 0.0f, Random.Range(-180.0f, 180.0f));
+                var rotation = Quaternion.AngleAxis(Random.Range(rotationRange[0], rotationRange[1]), Vector3.back);
     
                 var mapObject = Instantiate(prefab, position, rotation) as GameObject;
                 mapObjects[i] = mapObject.transform;

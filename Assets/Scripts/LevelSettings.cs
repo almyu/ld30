@@ -7,6 +7,9 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
     public struct Spawn {
         public GameObject prefab;
         public float chance;
+
+        public bool constrainRotation;
+        public Vector2 rotationConstraint;
     }
 
     public Spawn[] mapObjects;
