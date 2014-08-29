@@ -25,6 +25,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     private void Update() {
+
         if (GameLogics.instance.isVictory && !pause) {
             ShowMenu(victoryText);
         }
