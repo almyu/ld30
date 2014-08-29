@@ -28,6 +28,8 @@ public class ActionCharge : MonoBehaviour {
             trail.enabled = true;
 
         trigger.enabled = true;
+
+        Sounds.instance.PlayBoost();
     }
 
     private void LateUpdate() {
